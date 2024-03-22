@@ -5,34 +5,57 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // 내가 만든 컴포넌트 import 컴포넌트명 from 컴포넌트파일경로;
+
+// Chapter3
 import JSX선언 from './chapter3/1_JSX선언';
 import Book from './chapter3/Book';
 import Library from './chapter3/Library'
+
+// Chapter4
 import Clock from './chapter4/Clock';
+
+// Chapter5
 import CommentList from './chapter5/CommentList';
+
+// Chapter7
+import Counter from './chapter7/Counter';
+import UseStateList from './chapter7/UseStateList';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// root.render(
-//   <React.StrictMode> 유효성 검사
-//     {/* <App /> */}
-//     {/* <JSX /> */}
-//     {/* <Book /> */}
-//     {/* <Library /> */}
-//     <Clock/>
-//   </React.StrictMode>
-// );
+// ============================================================= //
 
-// setInterval(()=>{
-//   root.render(
-//   <Clock/>
-//   )
-// },1000)
+// Chapter3
+  // root.render(
+  //   <React.StrictMode> 유효성 검사
+  //     {/* <App /> */}
+  //     {/* <JSX /> */}
+  //     {/* <Book /> */}
+  //     {/* <Library /> */}
+  //     <Clock/>
+  //   </React.StrictMode>
+  // );
 
-root.render(
-  <CommentList/>
-)
+// Chapter4
+  // setInterval(()=>{
+  //   root.render(
+  //   <Clock/>
+  //   )
+  // },1000)
 
-// setInterval(함수, 밀리초)
+// Chapter5
+  // root.render(
+  //   <CommentList/>
+  // )
+  // setInterval(함수, 밀리초)
+
+// Chapter7
+  root.render(
+    // <Counter/>
+    <UseStateList/>
+  )
+
+// ============================================================= //
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

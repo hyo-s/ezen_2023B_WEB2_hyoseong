@@ -92,3 +92,14 @@ props
 
 CSS 파일호출
 import styles from CSS파일경로
+
+React Folder
+	node_modules (git commit X)
+		node_modules 재설치
+		통합 터미널 -> npm update
+
+	package.json (외부 라이브러리 관리)
+		npm update 하면 파일 내 dependencies 라이브러리 재설치
+
+	src
+		index.js
