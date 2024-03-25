@@ -86,3 +86,5 @@
         long        bigint
         X           longtext
         Date        datetime
+
+    JPA 연관관계

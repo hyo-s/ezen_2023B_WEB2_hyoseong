@@ -1,27 +1,46 @@
 package ezenweb.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="board")
-@Builder
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Builder
 public class BoardEntity {  // 테이블
+    @Id // PK
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    private int bno;
 
-    @Id // PK ( Not Null + Unique )
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int bno;        // 게시물번호
-    @Column(name="필드명", length=10, nullable=false, unique=true)
-    private String btitle;  // 게시물제목
+    @Column(columnDefinition = "longtext") // longtext
+    private String bcontent;
+
+    @Column
+    @ColumnDefault("0") // int, default 0
+    private int bview;
+
+    // 단방향 : FK 필드
+    @JoinColumn(name="mno_fk") // FK 필드명
+    @ManyToOne // 해당 필드 참조
+    private MemberEntity memberEntity;
+
+    // 양방향 : 댓글 FK
+    @OneToMany(mappedBy = "boardEntity")
+    @ToString.Exclude
+    @Builder.Default
+    private List<ReplyEntity> replyEntityList = new ArrayList<>();
+
+}
+
+/*
     @Column(columnDefinition="longtext")
     private String bcontent;
     private byte byteField;
@@ -34,4 +53,4 @@ public class BoardEntity {  // 테이블
     private Date dateField;
     @Column(columnDefinition="date")
     private String dateField2;
-}
+*/

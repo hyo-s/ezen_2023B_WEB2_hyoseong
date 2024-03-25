@@ -20,6 +20,14 @@ import CommentList from './chapter5/CommentList';
 // Chapter7
 import Counter from './chapter7/Counter';
 import UseStateList from './chapter7/UseStateList';
+import Counter2 from './chapter7/Counter2';
+
+// Chapter8
+import ConfirmButton from './chapter8/ConfirmButton';
+
+// Chapter9
+import Toolbar from './chapter9/Toolbar';
+import LandingPage from './chapter9/LandingPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -52,8 +60,19 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // Chapter7
   root.render(
     // <Counter/>
-    <UseStateList/>
+    // <UseStateList/>
+    <Counter2/>
   )
+
+// Chapter8
+  // root.render(
+  //   <ConfirmButton/>
+  // )
+
+// Chapter8
+  // root.render(
+  //   <LandingPage/>
+  // )
 
 // ============================================================= //
 
