@@ -1,5 +1,6 @@
 package ezenweb.model.entity;
 
+import ezenweb.model.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,7 +16,7 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-public class MemberEntity {
+public class MemberEntity extends BaseTime {
     @Id // PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private int mno;
@@ -45,4 +46,15 @@ public class MemberEntity {
     @ToString.Exclude
     @Builder.Default
     private List<ReplyEntity> replyEntityList = new ArrayList<>();
+
+    // Entity -> Dto
+    public MemberDto toDto(){
+        return MemberDto.builder()
+                .mno(this.mno)
+                .memail(this.memail)
+                .mpassword(this.mpassword)
+                .mname(this.mname)
+                .mrol(this.mrol)
+                .build();
+    }
 }

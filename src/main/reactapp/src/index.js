@@ -29,6 +29,16 @@ import ConfirmButton from './chapter8/ConfirmButton';
 import Toolbar from './chapter9/Toolbar';
 import LandingPage from './chapter9/LandingPage';
 
+// Chapter10
+import AttendanceBook from './chapter10/AttendanceBook';
+
+// Chapter11
+import NameForm from './chapter11/NameForm';
+// import SignUp from './chapter11/SignUp';
+
+// Component
+import SignUp from './component/member/SignUp';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // ============================================================= //
@@ -58,22 +68,37 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
   // setInterval(함수, 밀리초)
 
 // Chapter7
-  root.render(
-    // <Counter/>
-    // <UseStateList/>
-    <Counter2/>
-  )
+  // root.render(
+  //   // <Counter/>
+  //   // <UseStateList/>
+  //   <Counter2/>
+  // )
 
 // Chapter8
   // root.render(
   //   <ConfirmButton/>
   // )
 
-// Chapter8
+// Chapter9
   // root.render(
   //   <LandingPage/>
   // )
 
+// Chapter10
+  // root.render(
+  //   <AttendanceBook/>
+  // )
+
+// Chapter11
+  // root.render(
+  //   <NameForm/>
+  //   <SignUp/>
+  // )
+
+// Component
+  root.render(
+    <SignUp/>
+  )
 // ============================================================= //
 
 // If you want to start measuring performance in your app, pass a function
