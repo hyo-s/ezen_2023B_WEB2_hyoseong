@@ -38,6 +38,12 @@ import NameForm from './chapter11/NameForm';
 
 // Component
 import SignUp from './component/member/SignUp';
+import Index from './component/Index';
+
+// Chapter0
+import AxiosComponent from './chapter0/AxiosComponent';
+import RouteComponent from './chapter0/RouteComponent';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -97,8 +103,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // Component
   root.render(
-    <SignUp/>
+    // <SignUp/>
+    <Index/>
   )
+
+// Chapter0
+  // root.render(
+  //   <AxiosComponent/>
+  //   <RouteComponent/>
+  // )
+
 // ============================================================= //
 
 // If you want to start measuring performance in your app, pass a function
