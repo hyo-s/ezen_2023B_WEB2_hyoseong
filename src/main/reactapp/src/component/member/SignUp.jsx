@@ -3,6 +3,9 @@ import { useState } from "react"
 
 export default function SignUp(){
 
+    // 0. 유효성검사
+    
+
     // 1. 상태변수
     const [memail, setMemail] = useState('');
     const [mpassword, setMpassword] = useState('');
@@ -11,6 +14,20 @@ export default function SignUp(){
     // 2. memail 수정함수
     const onChangeMemail = (e)=>{
         setMemail(e.target.value);
+    }
+
+    // 3. 아이디 중복검사
+    const onFindId = (e)=>{
+        axios.get("/member/findid/get.do",{params:{'memail':memail}})
+        .then(response=>{
+            console.log(response);
+            if(response.data){
+                alert('중복된 아이디 입니다.')
+            }else(
+                alert('사용 가능한 아이디입니다.')
+            )
+        })
+        
     }
 
     // 3. 전송함수
@@ -40,6 +57,7 @@ export default function SignUp(){
         <div>
             <form>
                 아이디 : <input type="text" value={memail} onChange={onChangeMemail}/>
+                <button type="button" onClick={onFindId}>아이디중복검사</button>
                 패스워드 : <input type="password" value={mpassword} onChange={(e)=>setMpassword(e.target.value)}/>
                 이름 : <input type="text" value={mname} onChange={(e)=>setMname(e.target.value)}/>
                 <button type="button" onClick={onSignUp}>회원가입</button>

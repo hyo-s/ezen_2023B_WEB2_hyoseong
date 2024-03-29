@@ -7,9 +7,6 @@ export default function Header(props){
     // 로그인정보 state 변수
     const [loginInfo, setLoginInfo] = useState('');
 
-
-
-
     // 컴포넌트 생성 시 axios 실행해서 로그인 회원정보 호출
     useEffect(()=>{
         axios.get("/member/login/info/get.do")
@@ -26,7 +23,7 @@ export default function Header(props){
             <ul>
                 <li><Link to="/">홈</Link></li>
                 <li><Link to="/member/signup">회원가입</Link></li>
-                <li><Link to="/member/login">로그인</Link></li>
+                <li>{loginInfo?<Link to="/member/logout">로그아웃</Link>:<Link to="/member/login">로그인</Link>}</li>
             </ul>
         </div>
     </>)

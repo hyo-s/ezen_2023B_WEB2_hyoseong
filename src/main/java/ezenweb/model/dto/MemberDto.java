@@ -1,16 +1,18 @@
 package ezenweb.model.dto;
 
 import ezenweb.example.Member;
+import ezenweb.model.entity.BaseTime;
 import ezenweb.model.entity.MemberEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@Builder
-public class MemberDto {
+@SuperBuilder
+public class MemberDto extends BaseTimeDto {
     private int mno;
     private String memail;
     private String mpassword;
@@ -20,11 +22,9 @@ public class MemberDto {
     // Dto -> Entity
     public MemberEntity toEntity(){
         return MemberEntity.builder()
-                .mno(this.mno)
                 .memail(this.memail)
                 .mpassword(this.mpassword)
                 .mname(this.mname)
-                .mrol(this.mrol)
                 .build();
     }
 }

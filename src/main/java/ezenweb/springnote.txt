@@ -30,6 +30,7 @@
 
     JPA : Java Persistence API
         Persistence (영속성 : 프로그램이 종료되어도 사라지지 않는 데이터의 특성)
+        JAVA [ JVM : 휘발성(비영속성) ]
         서버와 데이터베이스 사이
             Entity : 자바 객체를 DB가 이해할 수 있게 만든 것으로 이를 기반으로 테이블이 만들어진다.
             Repository : 엔티티가 DB 속 테이블에 저장 및 관리(조작) 할 수 있도록 하는 인터페이스입니다.
@@ -44,9 +45,13 @@
             JpaRepository<조작할엔티티, PK 자료형>
     리포지토리 객체 이용한 엔티티 조작
         1. [C] .save(저장할엔티티)
+            - 영속된 상태 ( 레코드 저장된 결과, 매핑된 상태 )
         2. [R] .findAll()
+            - 영속된 상태 ( 레코드 저장된 결과, 매핑된 상태 )
         3. [U] .findById(호출할PK).get();
+            - 영속된 상태 ( 레코드 저장된 결과, 매핑된 상태 )
         4. [D] .delete(삭제할엔티티) 또는 .deleteByID(삭제할PK번호)
+            - 영속 삭제 ( 레코드에서 제거된 상태, 매핑 제거 )
 
     ORM (Object Relational Mapping)
         개발언어와 데이터베이스 연결 시 SQL 언어가 아닌 개발언어로 접근 할 수 있도록 해주는 툴
@@ -88,3 +93,9 @@
         Date        datetime
 
     JPA 연관관계
+
+        Entity --> DTO Select ( MVC 패턴에서 Entity 사용하는 구역이 Service인 비즈니스 로직에서 만 허용 )
+            Entity 클래스에 toDto()
+                toDto 변환에 사용하는 경우에 따라 생성해서 사용
+                경우의 수가 많아지면 복잡도 올라감 --> Map<Object, Object>
+                Rest API (문자통신) 이용한 외부로 데이터 전송 시

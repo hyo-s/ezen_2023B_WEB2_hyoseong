@@ -43,6 +43,8 @@ import Index from './component/Index';
 // Chapter0
 import AxiosComponent from './chapter0/AxiosComponent';
 import RouteComponent from './chapter0/RouteComponent';
+import Calculator from './chapter12/Calculator';
+import ProfileCard from './chapter13/ProfileCard';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -112,6 +114,17 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
   //   <AxiosComponent/>
   //   <RouteComponent/>
   // )
+
+// Chaptter12
+  // root.render(
+  //   <Calculator/>
+  // )
+
+// Chaptter13
+  // root.render(
+  //   <ProfileCard/>
+  // )
+
 
 // ============================================================= //
 

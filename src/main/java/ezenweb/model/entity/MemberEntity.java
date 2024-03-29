@@ -3,6 +3,7 @@ package ezenweb.model.entity;
 import ezenweb.model.dto.MemberDto;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ public class MemberEntity extends BaseTime {
         return MemberDto.builder()
                 .mno(this.mno)
                 .memail(this.memail)
-                .mpassword(this.mpassword)
                 .mname(this.mname)
                 .mrol(this.mrol)
                 .build();

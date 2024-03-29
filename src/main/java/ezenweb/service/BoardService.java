@@ -1,5 +1,7 @@
 package ezenweb.service;
 
+import ezenweb.model.dto.BoardDto;
+import ezenweb.model.dto.MemberDto;
 import ezenweb.model.entity.BoardEntity;
 import ezenweb.model.entity.MemberEntity;
 import ezenweb.model.entity.ReplyEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -29,42 +32,33 @@ public class BoardService {
     @Autowired
     private ReplyEntityRepository replyEntityRepository;
 
+    @Autowired
+    private MemberService memberService;
+
     @Transactional
     // 1. Create
-    public boolean postBoard(){
+    public boolean postBoard(BoardDto boardDto){
 
-        // ============= 1. [테스트] 회원가입 ============= //
-            // 엔티티 객체 생성
-        MemberEntity memberEntity = MemberEntity.builder()
-                .memail("qwe@qwe.qwe")
-                .mpassword("1234")
-                .mname("유재석")
-                .build();
-            // 엔티티를 DB에 저장
-        MemberEntity saveMemberEntity =  memberEntityRepository.save(memberEntity);
+        // 0. 로그인 여부 확인
+        MemberDto loginDto = memberService.doLoginInfo();
+        if(loginDto==null) return false;
 
-        // ============= 2. [테스트] 글쓰기 ============= //
-            // 엔티티 객체 생성
-        BoardEntity boardEntity = BoardEntity.builder()
-                .bcontent("게시물글입니다.")
-                .build();
-            // FK 대입
-        boardEntity.setMemberEntity(saveMemberEntity);
-            // 엔티티를 DB에 저장
-        BoardEntity saveBoardEntity = boardEntityRepository.save(boardEntity);
+        // 1. 로그인된 회원 엔티티 찾기
+        Optional<MemberEntity> optionalMemberEntity = memberEntityRepository.findById(loginDto.getMno());
 
-        // ============= 3. [테스트] 댓글작성 ============= //
-            // 엔티티 객체 생성
-        ReplyEntity replyEntity = ReplyEntity.builder()
-                .rcontent("댓글입니다.")
-                .build();
-            // FK 대입 [작성자]
-        replyEntity.setMemberEntity(saveMemberEntity);
-            // FK 대입 [게시물]
-        replyEntity.setBoardEntity(saveBoardEntity);
-            // 엔티티를 DB에 저장
-        replyEntityRepository.save(replyEntity);
+        // 2. 찾은 엔티티가 존재하지 않으면
+        if(!optionalMemberEntity.isPresent()) return false;
 
+        // 3. 엔티티 꺼내기
+        MemberEntity memberEntity = optionalMemberEntity.get();
+
+        // 4. 글 쓰기
+        BoardEntity saveBoard = boardEntityRepository.save(boardDto.toEntity());
+
+        if(saveBoard.getBno()>=1){
+            saveBoard.setMemberEntity(memberEntity);
+            return true;
+        }
         return false;
     }
 

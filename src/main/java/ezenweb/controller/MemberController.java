@@ -1,9 +1,14 @@
 package ezenweb.controller;
 
+import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.MemberDto;
+import ezenweb.model.entity.BoardEntity;
 import ezenweb.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
@@ -22,11 +27,10 @@ public class MemberController {
 // ======================== 로그인 ======================== //
     @PostMapping("/login/post.do")
     public boolean doLoginPost(MemberDto memberDto){
-        System.out.println("memberDto = " + memberDto);
         return memberService.doLoginPost(memberDto);
     }
 // ======================== 로그아웃 ======================== //
-    @GetMapping("/login/get.do")
+    @GetMapping("/logout/get.do")
     public boolean doLogOutGet(){
         return memberService.doLogOutGet();
     }
@@ -34,5 +38,19 @@ public class MemberController {
     @GetMapping("/login/info/get.do")
     public MemberDto doLoginInfo(){
         return memberService.doLoginInfo();
+    }
+// ======================== 아이디 중복검사 ======================== //
+    @GetMapping("/findid/get.do")
+    public boolean doFindIdGet(String memail){
+        return memberService.doFindIdGet(memail);
+    }
+    @GetMapping("/find/email/get.do")
+    public boolean doFindEmail(String memail){
+        return memberService.getFindMemail(memail);
+    }
+// ======================== 내가 쓴글 ======================== //
+    @GetMapping("/find/myboard/get.do")
+    public List<Map<Object, Object>> findByMyBoardList(){
+        return memberService.findByMyBoardList();
     }
 }

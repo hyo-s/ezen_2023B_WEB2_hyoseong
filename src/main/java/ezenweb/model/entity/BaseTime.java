@@ -2,6 +2,8 @@ package ezenweb.model.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass //
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 public class BaseTime {
 
     // 등록날짜 (레코드/엔티티)
