@@ -21,6 +21,8 @@ import CommentList from './chapter5/CommentList';
 import Counter from './chapter7/Counter';
 import UseStateList from './chapter7/UseStateList';
 import Counter2 from './chapter7/Counter2';
+import TextInputWithFocusButton from './chapter7/TextInputWithFocusButton';
+import MeasureExample from './chapter7/MeasureExample';
 
 // Chapter8
 import ConfirmButton from './chapter8/ConfirmButton';
@@ -43,8 +45,16 @@ import Index from './component/Index';
 // Chapter0
 import AxiosComponent from './chapter0/AxiosComponent';
 import RouteComponent from './chapter0/RouteComponent';
+
+// Chapter12
 import Calculator from './chapter12/Calculator';
+
+// Chapter13
 import ProfileCard from './chapter13/ProfileCard';
+
+// Chapter14
+import DarkOrLight from './chapter14/DarkOrLight';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -79,7 +89,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
   // root.render(
   //   // <Counter/>
   //   // <UseStateList/>
-  //   <Counter2/>
+  //   // <Counter2/>
+  //   // <TextInputWithFocusButton/>
+  //   <MeasureExample/>
   // )
 
 // Chapter8
@@ -123,6 +135,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // Chaptter13
   // root.render(
   //   <ProfileCard/>
+  // )
+
+// Chaptter14
+  // root.render(
+  //   <DarkOrLight/>
   // )
 
 

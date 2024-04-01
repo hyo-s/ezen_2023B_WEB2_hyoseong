@@ -1,5 +1,6 @@
 package ezenweb.service;
 
+import ezenweb.example.Board;
 import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.MemberDto;
 import ezenweb.model.entity.BoardEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,12 +66,23 @@ public class BoardService {
 
     @Transactional
     // 2. Read
-    public List<Object> getBoard(){
+    public List<BoardDto> getBoard(){
         // 1. 리포지토리를 이용한 모든 엔티티를 호출
-        List<BoardEntity> list = boardEntityRepository.findAll();
-        System.out.println("list = " + list);
-        System.out.println("작성자 = " + list.get(0).getMemberEntity().getMemail());
-        return null;
+        List<BoardEntity> boardEntityList = boardEntityRepository.findAll();
+        // 2. Entity --> Dto 변환
+        List<BoardDto> boardDtoList = new ArrayList<>();
+            // 꺼내온 엔티티 리스트를 순회한다
+        for (int i=0; i<boardEntityList.size(); i++){
+            // 하나씩 엔티티를 꺼낸다
+            BoardEntity boardEntity = boardEntityList.get(i);
+            // 해당 엔티티를 Dto로 변환한다.
+            BoardDto boardDto = boardEntity.toDto();
+            // 변환된 Dto를 리스트에 담는다.
+            boardDtoList.add(boardDto);
+
+        }
+
+        return boardDtoList;
     }
 
     @Transactional
