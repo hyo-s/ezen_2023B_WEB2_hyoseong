@@ -5,3 +5,4 @@ use springweb2;
 select * from member;
 select * from board;
 select * from reply;
+select * from gallery;

@@ -20,3 +20,12 @@ insert into reply(rcontent,bno_fk,mno_fk) values
 ('댓글내용4',2,1),
 ('댓글내용5',3,4),
 ('댓글내용6',1,5);
+
+insert into gallery(gname, bno_fk) values
+('1.jpg',1),
+('2.jpg',1),
+('3.jpg',2),
+('4.jpg',3),
+('5.jpg',4),
+('6.jpg',5),
+('7.jpg',6);

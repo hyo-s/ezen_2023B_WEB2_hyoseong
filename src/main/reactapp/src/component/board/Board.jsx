@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react";
+import MediaCard from "./MediaCard";
 
 export default function Board(props){
     
@@ -19,9 +20,9 @@ export default function Board(props){
         {boardList.map((data)=>{
             return(
                 <div key={data.bno}>
-                    게시글 : {data.bcontent}
-                    <p key={data.mno_fk}>작성자 : {data.memail}</p>
+                    <MediaCard board={data}/>
                 </div>
+
             )
         })}
     </>)
