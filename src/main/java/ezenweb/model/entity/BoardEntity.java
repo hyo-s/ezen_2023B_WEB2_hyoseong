@@ -31,17 +31,17 @@ public class BoardEntity extends BaseTime {  // 테이블
     private int bview;
 
     // 단방향 : FK 필드
-    @JoinColumn(name="mno_fk") // FK 필드명
+    @JoinColumn(name="mno") // FK 필드명
     @ManyToOne // 해당 필드 참조
     private MemberEntity memberEntity;
 
     // 양방향 : 댓글 FK
-    @OneToMany(mappedBy = "boardEntity")
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     @Builder.Default
     private List<ReplyEntity> replyEntityList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardEntity")
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     @Builder.Default
     private List<GalleryEntity> galleryEntityList = new ArrayList<>();

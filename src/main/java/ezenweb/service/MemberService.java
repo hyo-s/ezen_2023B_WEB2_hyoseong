@@ -45,7 +45,6 @@ public class MemberService {
 //        System.out.println("result2 = " + result2);
         // 3.
         MemberEntity result3 = memberEntityRepository.findByLoginSQL(memberDto.getMemail(), memberDto.getMpassword());
-        System.out.println("result3 = " + result3);
 
         if(result3 == null)return false;
 
@@ -94,7 +93,6 @@ public class MemberService {
 //        System.out.println("result1 = " + result1);
         // 3. 특정 필드의 조건으로 존재여부 검색
         boolean result2 = memberEntityRepository.existsByMemail(memail);
-        System.out.println("result2 = " + result2);
         // 4. Native SQL
 //        MemberEntity result3 = memberEntityRepository.findByMemailSQL(memail);
 //        System.out.println("result3 = " + result3);

@@ -18,7 +18,7 @@ public class GalleryEntity extends BaseTime {
     private int gno;
     private String gname;
     @ManyToOne
-    @JoinColumn(name = "bno_fk")
+    @JoinColumn(name = "bno")
     private BoardEntity boardEntity;
 
     public GalleryDto toDto(){

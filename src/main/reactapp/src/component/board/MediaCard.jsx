@@ -5,9 +5,21 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
+import { LoginInfoContext } from '../Index';
 
 export default function MediaCard(props) {
-    console.log(props);
+
+  const {loginInfo} = React.useContext(LoginInfoContext);
+
+  const onDelete = (event, bno, mno)=>{
+    axios.delete('/board/delete.do',{params:{bno:bno}})
+    .then(response=>{
+      window.location.href="/board"
+    })
+    .catch(error=>{console.log(error)})
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -24,7 +36,7 @@ export default function MediaCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
+        {props.board.mno_fk==loginInfo.mno && <Button size="small" onClick={(event)=>{onDelete(event, props.board.bno, props.board.mno_fk)}}>Delete</Button>}
         <Button size="small">Learn More</Button>
       </CardActions>
     </Card>

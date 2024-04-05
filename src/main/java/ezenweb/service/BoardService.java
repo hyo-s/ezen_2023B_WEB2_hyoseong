@@ -3,6 +3,7 @@ package ezenweb.service;
 import ezenweb.example.Board;
 import ezenweb.model.dto.BoardDto;
 import ezenweb.model.dto.MemberDto;
+import ezenweb.model.dto.PageDto;
 import ezenweb.model.entity.BoardEntity;
 import ezenweb.model.entity.GalleryEntity;
 import ezenweb.model.entity.MemberEntity;
@@ -14,6 +15,9 @@ import ezenweb.model.repository.ReplyEntityRepository;
 import jakarta.persistence.Entity;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,11 +72,15 @@ public class BoardService {
         BoardEntity saveBoard = boardEntityRepository.save(boardDto.toEntity());
 
         // 5. 사진 저장하기
-        List<GalleryEntity> galleryEntityList = boardDto.getMultipartFileList().stream().map((img)->{return GalleryEntity.builder().gname(fileService.fileUpload(img)).boardEntity(saveBoard).build();}).collect(Collectors.toList());
+        List<GalleryEntity> galleryEntityList = boardDto.getMultipartFileList().stream().map((img)->{
+            return GalleryEntity.builder()
+                    .gname(fileService.fileUpload(img))
+                    .boardEntity(saveBoard).build();}).collect(Collectors.toList());
+
         for (int i=0; i<galleryEntityList.size(); i++){
             GalleryEntity galleryEntity = galleryEntityRepository.save(galleryEntityList.get(i));
-            if (galleryEntity.getGno()>0){
-                System.out.println("업로드 성공" + galleryEntity.getGno());
+            if (galleryEntity.getGno()<0){
+                return false;
             }
         }
 
@@ -84,7 +93,7 @@ public class BoardService {
 
     @Transactional
     // 2. Read
-    public List<BoardDto> getBoard(){
+    public PageDto getBoard(int page, int view){
     // ===================== FOR ===================== //
 //        // 1. 리포지토리를 이용한 모든 엔티티를 호출
 //        List<BoardEntity> boardEntityList = boardEntityRepository.findAll();
@@ -101,9 +110,20 @@ public class BoardService {
 //        }
 
     // ===================== MAP ===================== //
-        return boardEntityRepository.findAll().stream().map((entity)->{
-                    return entity.toDto();
-                }).collect(Collectors.toList());
+        // 1. Pageable 인터페이스 이용한 페이징 처리
+            // pageNumber : 0 부터 시작하기 때문에 1페이지 일때 0 페이지 반환
+        Pageable pageable = PageRequest.of(page-1,view);
+            // 1. 페이징 처리된 엔티티 호출
+        Page<BoardEntity> boardEntityPage = boardEntityRepository.findAll(pageable);
+            // 1. 전체 페이지 수
+        System.out.println("boardEntityPage = " + boardEntityPage.getTotalPages());
+            // 2. 전체 게시물 수
+        System.out.println("boardEntityPage = " + boardEntityPage.getTotalElements());
+
+        List<Object> boardDtoList = boardEntityPage.stream().map((entity)->{return entity.toDto();}).collect(Collectors.toList());
+            // PageDto 구성
+        PageDto pageDto = PageDto.builder().data(boardDtoList).page(page).count(boardEntityPage.getTotalPages()).build();
+        return pageDto;
     }
 
     @Transactional
@@ -116,9 +136,19 @@ public class BoardService {
 
     @Transactional
     // 4. Delete
-    public boolean deleteBoard(){
-        boardEntityRepository.deleteById(1);
-        return false;
-    }
+    public boolean deleteBoard(int bno){
 
+        MemberDto loginDto = memberService.doLoginInfo();
+        if(loginDto==null) return false;
+        Optional<MemberEntity> optionalMemberEntity = memberEntityRepository.findById(loginDto.getMno());
+        if(!optionalMemberEntity.isPresent()) return false;
+        MemberEntity memberEntity = optionalMemberEntity.get();
+        BoardEntity boardEntity = boardEntityRepository.findById(bno).get();
+        if(boardEntity.getMemberEntity().getMno()==memberEntity.getMno()){
+            boardEntityRepository.delete(boardEntity);
+        }else {
+            return false;
+        }
+        return true;
+    }
 }

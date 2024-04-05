@@ -18,12 +18,12 @@ public class ReplyEntity {  // 테이블
     private String rcontent; // varchar(255)
 
     // FK 필드
-    @JoinColumn(name="bno_fk")
+    @JoinColumn(name="bno")
     @ManyToOne
     private BoardEntity boardEntity;
 
     // 단방향 : FK 필드
-    @JoinColumn(name="mno_fk")
+    @JoinColumn(name="mno")
     @ManyToOne
     private MemberEntity memberEntity;
 }
