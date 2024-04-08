@@ -99,3 +99,57 @@
                 toDto 변환에 사용하는 경우에 따라 생성해서 사용
                 경우의 수가 많아지면 복잡도 올라감 --> Map<Object, Object>
                 Rest API (문자통신) 이용한 외부로 데이터 전송 시
+
+    HTTP 이동 문자 전송 규약 (프로토콜)
+
+    WS (Web Socket)
+        WS 프로토콜을 기반으로 클라이언트와 서버 사이의 지속적인 양방향 연결
+        사용처 : 실시간처리, 채팅, 보안, 알림 등등
+
+        * 지속적인 양방향 연결
+            소켓 : 통신의 종착점 (통신이 도착해야 하는 곳 / 엔드포인트)
+            클라이언트 소켓이 서버 소켓으로부터 연결 요청
+
+            클라이언트                       서버
+            1. Socket                       1. Socket
+                                            2. Bind        * 서버 소켓 등록
+            3. Connect                      4. Accept      * 클라이언트 요청 수용
+            5. Write                        6. Read
+            5. Read                         6. Write
+            7. Close                        7. Close
+
+        구현
+            1. (클라이언트) JS
+                생성  new WebSocket(서버 소켓 URL)
+                    클라이언트 소켓이 생성되면서 서버소켓에게 접속 요청
+                웹 소켓 객체의 이벤트 함수들의 콜백함수 정의
+                    onopen onmessage onerror onclose
+                서버에게 메시지 전송
+                    send
+
+            2. (서버) JAVA/SPRING
+                웹 소켓 라이브러리 설치 implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+                서버 소켓의 핸들러 객체 생성
+                    1. 해당 클래스 생성
+                    2. 해당 클레스에 @Configuration @EnableWebSocket 주입
+                    3. 해당 클래스에 implements WebSocketConfigurer
+                    4. registerWebSocketHandlers 메소드 오버라이드(재정의)
+                    5. 재정의 registry.addHandler(서버객체, "/URL")
+
+                서버 소켓
+                    1. 클래스 생성
+                    2. 해당 클래스에 @Component 주입
+                    3. 해당 클래스에 extends TextWebSocketHandler or implements WebSocketHandler
+                    4. 메소드 재정의
+                        클라이언트 소켓이 접속이 성공적일 때
+                        afterConnectionEstablished(WebSocketSession session) throws Exception
+
+
+
+
+
+
+
+
+
