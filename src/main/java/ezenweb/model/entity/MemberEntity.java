@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
+@DynamicInsert // Default (@ColumnDefault) 값을 적용할 때 사용
 public class MemberEntity extends BaseTime {
     @Id // PK
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
@@ -25,14 +27,14 @@ public class MemberEntity extends BaseTime {
     @Column(length = 50, unique = true) // varchar(50) unique
     private String memail;
 
-    @Column(length = 30) // varchar(30)
+    @Column(length = 255) // varchar(30)
     private String mpassword;
 
     @Column(length = 20, nullable = false) // varchar(20)
     private String mname;
 
     @Column(name="mrol") // varchar(255), not null
-    @ColumnDefault("'user'") // 문자"''", 숫자"" // default 'user'
+    @ColumnDefault("'USER'") // 문자"''", 숫자"" // default 'USER'
     private String mrol;
 
 

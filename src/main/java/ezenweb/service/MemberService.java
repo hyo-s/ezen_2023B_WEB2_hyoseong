@@ -7,6 +7,17 @@ import ezenweb.model.entity.MemberEntity;
 import ezenweb.model.repository.MemberEntityRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -16,12 +27,49 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+
+    // (Social) 소셜 회원 로그인 커스텀
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        System.out.println("userRequest = " + userRequest);
+        return null;
+    }
+
+    // (Security) 일반 회원 로그인 커스텀
+    @Override
+    public UserDetails loadUserByUsername(String memail) throws UsernameNotFoundException {
+
+            // 로그인 창에서 입력받은 아이디
+        System.out.println("username = " + memail);
+            // 입력받은 아이디로 실제 아이디와 (암호화된) 패스워드 (meamil 이용한 회원 엔티티 찾기)
+        MemberEntity memberEntity = memberEntityRepository.findByMemail(memail);
+        // 만약에 입력한 이메일의 엔티티가 없으면
+        if( memberEntity == null){
+            // 강제 예외 발생
+            throw new UsernameNotFoundException("없는 아이디");
+        }
+            // ROLE
+            // GrantedAuthority : 권한의 의미를 저장하는 클래스
+            // SimpleGrantedAuthority("ROLE_권한") : 문자형식의 권한 저장
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("ROLE_"+memberEntity.getMrol())); // ROLE_등급명
+
+            // UserDetails 반환 [ 실제 아이디와 실제 패스워드 반환 ] Token에 입력받은 아이디/패스워드 검증하기 위한 실제 정보 반환
+        UserDetails userDetails = User.builder()
+                .username(memberEntity.getMemail()) // 실제 아이디
+                .password(memberEntity.getMpassword()) // 실제 비밀번호(암호화)
+                .authorities(authorityList) // ROLE 등급
+                .build();
+        return userDetails;
+    }
 
     @Autowired
     MemberEntityRepository memberEntityRepository;
 
+
 // ======================== 회원가입 ======================== //
+// (Security) 패스워드 암호화
     public boolean doSignUpPost(MemberDto memberDto){
         // 1. Entity 이용한 레코드 저장방법
         // 엔티티를 만든다.
@@ -60,11 +108,26 @@ public class MemberService {
     }
 // ======================== 현재 로그인 회원정보 호출 (세션호출) ======================== //
     public MemberDto doLoginInfo(){
-        Object object = request.getSession().getAttribute("loginInfo");
-        if (object != null){
-            return (MemberDto)object;
+        // (Security) 사용 전
+//        Object object = request.getSession().getAttribute("loginInfo");
+//        if (object != null){
+//            return (MemberDto)object;
+//        }
+//        return null;
+        // (Security) 사용 후 Principal : 본인/주역/주체자 : 브라우저마다 1개
+        // 1.
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("object = " + object);
+        // 2. 만약에 로그인 상태가 아니면
+        if(object.equals("anonymousUser")){
+            // anonymous : 익명 <--> 비로그인
+            return null;
         }
-        return null;
+        // 3. 로그인 상태이면 UserDetails 타입 변환
+        UserDetails userDetails = (UserDetails)object;
+        // 4. 로그인 성공한 엔티티 찾기
+        MemberEntity memberEntity = memberEntityRepository.findByMemail(userDetails.getUsername());
+        return MemberDto.builder().mno(memberEntity.getMno()).memail(memberEntity.getMemail()).mname(memberEntity.getMname()).build();
     }
 // ======================== 아이디 중복검사 ======================== //
     public boolean doFindIdGet(String memail){

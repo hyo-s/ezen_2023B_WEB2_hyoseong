@@ -25,6 +25,9 @@ export default function Login(props){
         아이디 : <input type="text" name="memail"/>
         비밀번호 : <input type="password" name="mpassword"/>
         <button type="button" onClick={onLogin}>로그인</button>
+        <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+        <a href="/oauth2/authorization/naver">네이버 로그인</a>
+        <a href="/oauth2/authorization/google">구글 로그인</a>
     </form>
     </>)
 }

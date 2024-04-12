@@ -24,16 +24,16 @@ public class MemberController {
     public boolean doSignUpPost(@RequestBody MemberDto memberDto){
         return memberService.doSignUpPost(memberDto);
     }
-// ======================== 로그인 ======================== //
-    @PostMapping("/login/post.do")
-    public boolean doLoginPost(MemberDto memberDto){
-        return memberService.doLoginPost(memberDto);
-    }
-// ======================== 로그아웃 ======================== //
-    @GetMapping("/logout/get.do")
-    public boolean doLogOutGet(){
-        return memberService.doLogOutGet();
-    }
+//// ======================== 로그인 ======================== //
+//    @PostMapping("/login/post.do")
+//    public boolean doLoginPost(MemberDto memberDto){
+//        return memberService.doLoginPost(memberDto);
+//    }
+//// ======================== 로그아웃 ======================== //
+//    @GetMapping("/logout/get.do")
+//    public boolean doLogOutGet(){
+//        return memberService.doLogOutGet();
+//    }
 // ======================== 현재 로그인 회원정보 호출 (세션호출) ======================== //
     @GetMapping("/login/info/get.do")
     public MemberDto doLoginInfo(){

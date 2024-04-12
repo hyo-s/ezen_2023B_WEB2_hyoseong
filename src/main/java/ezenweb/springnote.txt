@@ -145,11 +145,35 @@
                         클라이언트 소켓이 접속이 성공적일 때
                         afterConnectionEstablished(WebSocketSession session) throws Exception
 
+    Spring Security
+        인증, 인가 관련 아키텍쳐/기능 제공
+            인가 : 특정 리소스에 접근하기 위한 권한이 맞는지 확인 예) 여권 발급
+            인증 : 특정 리소스에 접근하기 위한 발급된 권한 확인
+            권한 : 특정 리소스에 접근하기 위한 권리가  주어짐
 
+        대표 기능
+            1.로그인 2.로그아웃 3.소셜로그인 4.csrf(body사용금지)방지 5.토큰(징표/인증권한상태)
+            로그인/로그아웃 컨트롤러 구현했다면 코드 제거 (시큐리티에서 지원)
 
+            허가(Authorization)
+            토큰(증표/인증결과 정보)
+            승인(Authorize)
+            인증이 된 상태(Authenticated)
 
+        실행
+            implementation 'org.springframework.boot:spring-boot-starter-security'
+            Username : user
+            UserPassword : Using generated security password
 
+            SecurityConfig 클래스 선언
+            SecurityFilterChain 반환 타입으로 매개변수 HttpSecurity 함수 정의
+            http.authorizeHttpRequests( (매개변수)->{
+                매개변수.requestMatchers(AntPathRequestMatcher.antMatcher("/PATH").권한제한 함수
+            }
+            권한 제한 함수
+                permitAll() 권한이 없어도 모두 사용
+                authenticated() 권한이 있으면 허용
+                hasAnyRole("ROLE명","ROLE명") 권한이 있으면서 특정 ROLE 여러개 허용
+                hasRole("ROLE명") 권한이 있으면서 특정 ROLE 하나만 허용
 
-
-
-
+            로그인 커스텀

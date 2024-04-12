@@ -27,6 +27,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     // Web Socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // OAuth2 Client
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {
